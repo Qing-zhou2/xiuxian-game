@@ -42,8 +42,9 @@ func take_damage(dmg: int) -> void:
 
 func die() -> void:
 	# 掉落灵石，等玩家走上去采集
-	var drop = DropScript.new()
+	# 用 call_deferred 延后挂到场景树，避免在物理回调里改碰撞状态报错
+	var drop := DropScript.new()
 	drop.value = spirit_stone_value
-	get_parent().add_child(drop)
-	drop.global_position = global_position
+	drop.position = position
+	get_parent().call_deferred("add_child", drop)
 	queue_free()

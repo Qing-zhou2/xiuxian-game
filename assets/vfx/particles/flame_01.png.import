@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bksh8m5wwbiph"
-path="res://.godot/imported/slash.png-17066201815f4a480edae487c8cf2325.ctex"
+uid="uid://cddmk0hpw4ort"
+path="res://.godot/imported/flame_01.png-2e7d946466186814d58fd1a1da253839.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/slash.png"
-dest_files=["res://.godot/imported/slash.png-17066201815f4a480edae487c8cf2325.ctex"]
+source_file="res://assets/vfx/particles/flame_01.png"
+dest_files=["res://.godot/imported/flame_01.png-2e7d946466186814d58fd1a1da253839.ctex"]
 
 [params]
 
