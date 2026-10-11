@@ -3,14 +3,19 @@ extends CharacterBody2D
 # 敌人：简单追击 AI（MVP 用代码，后续换 LimboAI 行为树）
 # 美术素材：assets/enemy.png（覆盖同名文件即可换图）
 
+const GameConfig := preload("res://data/game_config.gd")
 const DropScript := preload("res://scripts/Drop.gd")
 const ENEMY_TEXTURE := preload("res://assets/enemy.png")
 
-const MOVE_SPEED := 90.0
+const MOVE_SPEED := GameConfig.ENEMY_MOVE_SPEED
+const ATTACK_DAMAGE := GameConfig.ENEMY_ATTACK_DAMAGE
+const ATTACK_INTERVAL := GameConfig.ENEMY_ATTACK_INTERVAL
+const CONTACT_RANGE := 30.0   # 接触伤害判定距离（MVP 用距离，后续换 Area2D）
 
-var hp := 30
-var spirit_stone_value := 3
+var hp := GameConfig.ENEMY_MAX_HP
+var spirit_stone_value := GameConfig.ENEMY_SPIRIT_STONE_VALUE
 var player: Node2D
+var _attack_timer := 0.0
 
 
 func _ready() -> void:
@@ -26,12 +31,18 @@ func _ready() -> void:
 	add_child(sprite)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if player == null or not is_instance_valid(player):
 		return
 	var dir := (player.global_position - global_position).normalized()
 	velocity = dir * MOVE_SPEED
 	move_and_slide()
+	_attack_timer = max(0.0, _attack_timer - delta)
+	# 接触伤害：靠近玩家时按间隔造成伤害（MVP 用距离判定，后续可换 Area2D 攻击判定）
+	if _attack_timer <= 0.0 and global_position.distance_to(player.global_position) < CONTACT_RANGE:
+		_attack_timer = ATTACK_INTERVAL
+		if player.has_method("take_damage"):
+			player.take_damage(ATTACK_DAMAGE)
 
 
 func take_damage(dmg: int) -> void:

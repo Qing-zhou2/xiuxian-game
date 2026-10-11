@@ -6,6 +6,7 @@ extends Area2D
 const DROP_TEXTURE := preload("res://assets/spirit_stone.png")
 
 var value := 3
+var _taken := false
 
 
 func _ready() -> void:
@@ -23,6 +24,9 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
+	if _taken:
+		return
 	if body.is_in_group("player"):
-		GameManager.add_spirit_stones(value)
+		_taken = true
+		RunManager.add_temp_stones(value)
 		queue_free()
